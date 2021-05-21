@@ -2,6 +2,8 @@ import { Button, Input } from "react-native-elements";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { TouchableOpacity } from "react-native-gesture-handler";
+
 const ProfileEditScreen = ({ route, navigation }) => {
   // console.log('Parmeters: ', route.params);
   const initialName = route.params.name;
@@ -10,6 +12,29 @@ const ProfileEditScreen = ({ route, navigation }) => {
   const [name, setName] = useState(initialName);
   const [imageUrl, setImageUrl] = useState(initialImageUrl);
   const [description, setDescription] = useState(initialDescription);
+
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={() => 
+          navigation.navigate('Profile')}>
+        <Text>Cancel</Text>
+      </TouchableOpacity>
+    ),
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => 
+          navigation.navigate('Profile', {
+            name,
+            imageUrl,
+            description
+          })
+        }
+      >
+        <Text>Save</Text>
+      </TouchableOpacity>
+    ),
+  });
 
   return (
     <View>
@@ -24,12 +49,6 @@ const ProfileEditScreen = ({ route, navigation }) => {
         value={description}
         onChangeText={setDescription}
         multiline={true}
-      />
-      <Button
-        title='Save Changes'
-        onPress={() => {
-          navigation.navigate('Profile', { name, imageUrl, description });
-        }} 
       />
     </View>
   );

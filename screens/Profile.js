@@ -2,7 +2,9 @@ import { Button, Card } from "react-native-elements";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
+import { Feather } from '@expo/vector-icons';
 import { Input } from "react-native-elements";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ProfileScreen = ({ route, navigation }) => {
   const [name, setName] = useState("Hudsonville Honey");
@@ -25,6 +27,22 @@ const ProfileScreen = ({ route, navigation }) => {
     }
   }, [route.params?.name, route.params?.imageUrl, route.params?.description]);
 
+  navigation.setOptions({
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={() => 
+          navigation.navigate('ProfileEdit', {
+            name,
+            imageUrl,
+            description
+          })
+        }
+      >
+        <Feather style={{ marginRight: 10 }} name="edit" size={24} />
+      </TouchableOpacity>
+    ),
+  });
+
   return (
     <View>
       <Card>
@@ -32,13 +50,6 @@ const ProfileScreen = ({ route, navigation }) => {
         <Card.Image source={{uri: imageUrl}} />
         <Text style={{ marginBottom: 10 }}>{description}</Text>
       </Card>
-      <Button
-        title="Go to Edit"
-        onPress={() => navigation.navigate(
-          'ProfileEdit',
-          {name, imageUrl, description})
-        }
-      />
     </View>
   );
 };
